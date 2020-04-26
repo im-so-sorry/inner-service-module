@@ -1,4 +1,5 @@
-from typing import Optional, Dict
+from datetime import datetime, timedelta
+from typing import Optional, Dict, List
 from urllib.parse import urljoin
 
 import requests
@@ -35,7 +36,7 @@ class BaraddurService(BaseService):
         return self._make_call(path, params=params, username=username)
 
     def get_rules(self, username: str, social: str = None):
-        path = "stream/rule"
+        path = "stream/rule/"
 
         params = {
             "social": social or self.service
@@ -46,11 +47,43 @@ class BaraddurService(BaseService):
     def add_rule(self, username: str, tag: str, value: str, social: str = None):
         path = "stream/rule"
 
-        params = {
+        body = {
+            "key": tag,
+            "value": value,
+            "service": social or self.service
+        }
+
+        return self._make_call(path, method="POST", body=body, username=username)
+
+    def remove_rule(self, username: str, tag: str, social: str = None):
+        path = "stream/rule/remove_rule/"
+
+        body = {
+            "key": tag,
             "social": social or self.service
         }
 
-        return self._make_call(path, params=params, username=username)
+        return self._make_call(path, method="DELETE", body=body, username=username)
+
+    def get_stats(self, username: str, tags: List[str] = None, service: str = None, from_date: "datetime" = None,
+                  to_date: "datetime" = None):
+        path = "stream/event/stats/"
+
+        body = {}
+
+        if from_date:
+            body["from_date"] = from_date.isoformat()
+
+        if to_date:
+            body["to_date"] = to_date.isoformat()
+
+        if tags:
+            body["tags"] = tags
+
+        if service:
+            body["services"] = [service]
+
+        return self._make_call(path, method="POST", body=body, username=username)
 
 
 if __name__ == '__main__':
@@ -59,5 +92,8 @@ if __name__ == '__main__':
     # r = bs.get_user("arck1", "1")
     # print(r.json())
 
-    r = bs.get_rules("arck1", "1")
-    print(r.json())
+    # r = bs.get_rules("98449858", "vk")
+    # print(r.text)
+
+    r = bs.get_stats("98449858", ["vk"], from_date=datetime.now() - timedelta(hours=1))
+    print(r.text)
