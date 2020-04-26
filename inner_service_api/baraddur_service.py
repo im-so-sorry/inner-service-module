@@ -35,6 +35,16 @@ class BaraddurService(BaseService):
             params["token"] = token
         return self._make_call(path, params=params, username=username)
 
+    def switch_streaming(self, username: str, state: bool = True, token: str = None):
+        path = "user/social_user/switch_streaming/"
+        params = {}
+        if token:
+            params["token"] = token
+        body = {
+            "state": state
+        }
+        return self._make_call(path, method="POST", body=body, params=params, username=username)
+
     def get_rules(self, username: str, social: str = None):
         path = "stream/rule/"
 
