@@ -28,11 +28,11 @@ class BaraddurService(BaseService):
 
         return response
 
-    def get_user(self, username: str, token: str):
+    def get_user(self, username: str, token: str = None):
         path = "user/social_user/get_user/"
-        params = {
-            "token": token
-        }
+        params = {}
+        if token:
+            params["token"] = token
         return self._make_call(path, params=params, username=username)
 
     def get_rules(self, username: str, social: str = None):
@@ -95,5 +95,5 @@ if __name__ == '__main__':
     # r = bs.get_rules("98449858", "vk")
     # print(r.text)
 
-    r = bs.get_stats("98449858", ["vk"], from_date=datetime.now() - timedelta(hours=1))
+    r = bs.get_user("98449858")
     print(r.text)
