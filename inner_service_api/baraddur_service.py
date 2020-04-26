@@ -29,7 +29,7 @@ class BaraddurService(BaseService):
         return response
 
     def get_user(self, username: str, token: str):
-        path = "user/social_user/get_user"
+        path = "user/social_user/get_user/"
         params = {
             "token": token
         }
@@ -45,7 +45,7 @@ class BaraddurService(BaseService):
         return self._make_call(path, params=params, username=username)
 
     def add_rule(self, username: str, tag: str, value: str, social: str = None):
-        path = "stream/rule"
+        path = "stream/rule/"
 
         body = {
             "key": tag,
