@@ -18,9 +18,9 @@ class BaraddurService(BaseService):
         url = urljoin(self.base_url, path)
 
         headers = {
-            "X-USERNAME": username,
-            "X-SERVICE": self.service,
-            "X-INTERNAL-TOKEN": self.token
+            "X-USERNAME": str(username),
+            "X-SERVICE": str(self.service),
+            "X-INTERNAL-TOKEN": str(self.token)
         }
 
         response = requests.request(method, url=url, params=params, json=body, headers=headers)
@@ -34,26 +34,27 @@ class BaraddurService(BaseService):
         }
         return self._make_call(path, params=params, username=username)
 
-    def get_rules(self, username: str, social: str = "vk"):
+    def get_rules(self, username: str, social: str = None):
         path = "stream/rule"
 
         params = {
-            "social": social
+            "social": social or self.service
         }
 
         return self._make_call(path, params=params, username=username)
 
-    def add_rule(self, username: str, social, tag: str, value: str):
+    def add_rule(self, username: str, tag: str, value: str, social: str = None):
         path = "stream/rule"
 
         params = {
-            "social": social
+            "social": social or self.service
         }
 
         return self._make_call(path, params=params, username=username)
+
 
 if __name__ == '__main__':
-    bs = BaraddurService("http://localhost:8000/", "1", "service")
+    bs = BaraddurService("http://localhost:8000/", "1", "vk")
 
     # r = bs.get_user("arck1", "1")
     # print(r.json())
