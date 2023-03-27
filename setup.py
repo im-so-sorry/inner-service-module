@@ -18,7 +18,7 @@ setup(
     install_requires=[
         'requests==2.23.0',
         'environs==7.4.0',
-        'redis==3.4.1',
+        'redis==4.5.3',
     ],
     # See http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
