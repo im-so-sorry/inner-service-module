@@ -16,7 +16,7 @@ setup(
     include_package_data=True,
     test_suite="tests",
     install_requires=[
-        'requests==2.23.0',
+        'requests==2.31.0',
         'environs==7.4.0',
         'redis==3.4.1',
     ],
